@@ -1,0 +1,2293 @@
+{
+  "name": "Agente de IA",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agendamento-clinica-2026",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -4176,
+        -48
+      ],
+      "id": "07717020-4c15-4f38-93fe-6c480e692ae5",
+      "name": "Webhook",
+      "webhookId": "964e85ef-1e1b-4358-ad3a-e8a68549ae7b"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o",
+          "mode": "list",
+          "cachedResultName": "Cadastro - Agendamento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Nome",
+              "lookupValue": "={{ $json.Nome || '' }}"
+            },
+            {
+              "lookupColumn": "Telefone",
+              "lookupValue": "={{ $json.Numero || 0 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -64
+      ],
+      "id": "66304512-3edd-4cbb-a848-cec6948cbe6a",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lswvF2h1q9LRR9Nn",
+          "name": "google sheets agente clinica"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21d9c098-4f02-4ff8-9466-5237f6178ed1",
+              "leftValue": "={{ $('Coletando dados').item.json.Numero }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        -64
+      ],
+      "id": "34d573f2-95dc-44aa-ba4b-7f2d547353be",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o",
+          "mode": "list",
+          "cachedResultName": "Cadastro - Agendamento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1E53ukoWfTUyyrDL4hYyEeq7EDnIc62N0uIICEmWMn7o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $('Coletando dados').item.json.Nome }}",
+            "Telefone": "={{ $('Coletando dados').item.json.Numero }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        688,
+        144
+      ],
+      "id": "5a50c582-8bfb-4e38-8029-c5f820ab4285",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lswvF2h1q9LRR9Nn",
+          "name": "google sheets agente clinica"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "fileName": "audio.mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        -80
+      ],
+      "id": "a7e09c50-ae2f-43b7-a1e4-83beb8996f99",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "pt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1648,
+        -80
+      ],
+      "id": "b2119d1b-e796-4be8-a8a4-39fabab97561",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "36649d05-8008-49d2-abf6-05bfc9f9bf8d",
+              "leftValue": "={{ $('Coletando dados').item.json.fromMe }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2432,
+        -128
+      ],
+      "id": "94a2c85a-3e86-4540-b8a9-e0a929fe6100",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Coletando dados').item.json.bloquearAgente }}",
+        "value": "true",
+        "expire": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        -272
+      ],
+      "id": "824d3384-8286-437e-8103-84eeb4e3e5c4",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "={{ $('Coletando dados').item.json.bloquearAgente }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2848,
+        -112
+      ],
+      "id": "3ec14415-4676-462a-bc3e-245951e93c5f",
+      "name": "Redis1",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bb56576a-8c2c-4dba-ab29-b09fbf8d7fc7",
+              "leftValue": "={{ $json.BloquearAgente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3072,
+        -112
+      ],
+      "id": "8ad9cec4-64aa-4dff-a164-0dc437101245",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3280,
+        -336
+      ],
+      "id": "aa1abfb0-7768-4f20-abc8-f39fdf8e6165",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Coletando dados').item.json.msgPicotada }}",
+        "messageData": "={{ $json.mensagemAudioMaisTexto }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3616,
+        -96
+      ],
+      "id": "fb8fbc2e-a4b3-4404-8760-6e2b98cd5bf2",
+      "name": "Redis2",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d06bf33d-5e22-43d7-a3f4-adc981821737",
+              "name": "mensagemAudioMaisTexto",
+              "value": "={{ $('Ponto_De_Encontro').item.json.textoPronto }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3376,
+        -96
+      ],
+      "id": "0a790679-60af-4c48-a3c8-03b73fcd743e",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3808,
+        -96
+      ],
+      "id": "aab6d7c7-79df-4da3-b45f-d6453de967e3",
+      "name": "Wait",
+      "webhookId": "a9d91f7f-919a-45e7-850b-a7aadfc47a00"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Coletando dados').item.json.msgPicotada }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        4016,
+        -96
+      ],
+      "id": "85ddded5-8a38-436d-956d-27520535982d",
+      "name": "Redis3",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Coletando dados').item.json.msgPicotada }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        4224,
+        -96
+      ],
+      "id": "c7fb2346-2f81-4460-8a7e-c1bbb0157698",
+      "name": "Redis4",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mensagemFinal }}",
+        "options": {
+          "systemMessage": "=Hora atual: {{ $now }}\nTelefone do paciente: {{ $('Coletando dados').item.json.Numero }}\n\n# SUA FUNÇÃO\nVocê é a assistente virtual da Clínica de Olhos Oftalmocenter. Seja sempre humana, acolhedora e objetiva. NUNCA use emojis. NUNCA dê diagnósticos médicos.\n\n# REGRA DE SEGURANÇA (ANTI-TROTE - APENAS FORTALEZA)\nEsta regra se aplica EXCLUSIVAMENTE aos atendimentos da unidade Fortaleza.\nCada paciente possui o limite estrito de 1 (uma) consulta agendada por vez.\nToda vez que o paciente solicitar um agendamento para Fortaleza, pesquise ativamente o telefone dele no calendário antes de listar os horários disponíveis. Caso localize uma consulta futura vinculada a esse telefone, informe a data e o horário desse agendamento existente. Avise educadamente que o sistema permite apenas uma marcação ativa por paciente e ofereça as opções de manter, cancelar ou remarcar a consulta atual. NUNCA acione o calendário se a unidade escolhida for Jurema ou Quixeramobim.\n\n# PRIORIDADE MÁXIMA (LEITURA DE IMAGENS)\nSe a mensagem do paciente começar com \"[FOTO LIDA]:\", siga estas regras rigorosamente:\n1. IMAGEM CLÍNICA: Se o texto extraído contiver termos oftalmológicos (Esférico, Cilindro, grau, longe, perto), limite sua resposta a confirmar o recebimento do documento. Diga apenas algo natural como: \"Recebi a sua receita perfeitamente, [Nome do Paciente]!\". Ignore os valores numéricos da receita na sua resposta e passe diretamente para a pergunta sobre o agendamento de um horário com o Dr. Leonardo.\n2. IMAGEM ALEATÓRIA: Se a foto fugir do contexto oftalmológico, informe educadamente que a imagem não se aplica ao atendimento clínico e pergunte em que mais pode ajudar hoje.\n\n# FICHA DO PACIENTE (ESTADO ATUAL)\n{{ $('Basic LLM Chain1').item.json.output }}\n\n# DICIONÁRIO DE PROCEDIMENTOS (YAG LASER)\nSe o paciente perguntar sobre \"limpeza da lente\", \"limpeza de lente intraocular\" ou usar expressões populares como \"lavar os olhos\", entenda automaticamente que ele está falando do procedimento médico \"YAG Laser\". \nResponda de forma direta que realizamos sim este procedimento e que o valor é R$ 270,00 PARA CADA OLHO.\n\n# REGRAS DE ATENDIMENTO (LEIA COM ATENÇÃO)\nVocê DEVE olhar para a FICHA DO PACIENTE acima e seguir esta ordem rigorosamente. Faça APENAS UMA pergunta por vez.\n\n1. UNIDADE E BOAS VINDAS: \nSe o campo \"unidade\" estiver vazio (\"\"), diga APENAS: \"Consultório de oftalmologia do Dr Leonardo Queiroz. Em qual unidade você deseja atendimento: Fortaleza, Caucaia (Jurema) ou Quixeramobim?\" e PARE.\n- Se a unidade for Caucaia (Jurema), informe que o atendimento ocorre aos sábados (8h-12h) por ordem de chegada, e que o valor da consulta é R$ 160,00. Pergunte se o paciente deseja que envie o endereço da unidade. Se ele disser \"sim\", envie EXATAMENTE este endereço: \"Av. Dom Almeida Lustosa, 2741, loja 4, Shopping Dom Lustosa, Centro. Entre a Casa Pio e a Caixa Econômica\" e encerre o atendimento. IMPORTANTE: Se você já passou essas informações ou o endereço anteriormente na conversa, NUNCA as repita. Se o paciente enviar apenas saudações (\"Boa tarde\", \"Oi\") ou encerramentos (\"Não\", \"Obrigado\"), responda de forma curta e natural, sem citar regras, horários ou valores novamente.\n- Se a unidade for Quixeramobim, redirecione o atendimento informando APENAS: \"Para informações e agendamentos em Quixeramobim, por favor entre em contato diretamente pelo número (88) 99949-8470.\" e encerre a conversa. NUNCA mencione preços para esta unidade.\n\nSe a unidade for Caucaia (Jurema): Informe que o atendimento ocorre aos sábados (8h-12h) ESTRITAMENTE por ordem de chegada (não realizamos agendamentos para esta unidade), e que o valor da consulta é R$ 160,00. Pergunte se o paciente deseja que envie o endereço. Se ele disser \"sim\", envie EXATAMENTE: \"Av. Dom Almeida Lustosa, 2741, loja 4, Shopping Dom Lustosa, Centro. Entre a Casa Pio e a Caixa Econômica\". IMPORTANTE: Se o paciente tentar agendar após receber as informações, apenas reforce amigavelmente que é por ordem de chegada. NUNCA repita o valor da consulta e NUNCA ofereça o endereço novamente se já o tiver enviado.\n\nSe a unidade for Quixeramobim: Redirecione o atendimento informando APENAS: \"Para informações e agendamentos em Quixeramobim, por favor entre em contato diretamente pelo número (88) 99949-8470.\" e encerre a conversa. NUNCA mencione preços para esta unidade.\n\n2. CADASTRO (Apenas para Fortaleza):\nSe a unidade for Fortaleza, verifique os campos \"nome_paciente\" e \"data_nascimento\". \nSe algum deles estiver vazio (\"\"), pergunte APENAS a informação que falta de forma educada e PARE. Nunca peça a data de nascimento se não tiver o nome primeiro.\n\n3. ATENDIMENTO E AGENDAMENTO (Ficha Completa - Apenas Fortaleza):\nSOMENTE SE \"unidade\", \"nome_paciente\" e \"data_nascimento\" estiverem todos preenchidos, você pode tirar dúvidas ou agendar consultas.\n- Valor Fortaleza: Informe que o valor da consulta particular é R$ 250,00 (com 20% de desconto no PIX/Dinheiro). Não aceitamos convênio.\n- Outros Valores: Se o paciente perguntar sobre outros valores, descontos, ou preços de exames/procedimentos, diga de forma amigável: \"Para informações sobre outros valores, posso transferir você para a nossa secretária. Deseja falar com ela agora?\". Se o paciente aceitar, acione a tool \"Pausar_Bot_Para_Humano\".\n- Regras de Agenda: O Dr. Leonardo Teixeira atende APENAS às segundas-feiras, das 15:00 às 17:00 (consultas a cada 20 min). Use a tool MCP Google Calendar para agendar e sempre confirme o horário com o paciente antes de marcar.\n\n# LEITURA DE IMAGENS (EXAMES OU FOTOS DIVERSAS)\nQuando receber o texto extraído de uma imagem enviada pelo paciente, analise o contexto imediatamente:\n1. IMAGEM CLÍNICA (Receitas, Exames, Óculos): Se o texto contiver termos oftalmológicos (Esférico, Cilindro, Eixo, grau, longe, perto), confirme a leitura da receita e faça um resumo amigável dos dados. Lembre-se: NÃO dê diagnósticos médicos. Após comentar, pergunte se o paciente deseja agendar um retorno/consulta com o Dr. Leonardo.\n2. IMAGEM ALEATÓRIA (Fora de contexto): Se o conteúdo da imagem não tiver NENHUMA relação com oftalmologia ou com a clínica, avise educadamente que você é a assistente virtual da clínica e não conseguiu relacionar aquela foto ao atendimento oftalmológico. Redirecione a conversa perguntando em que mais pode ajudar hoje.\n\n# FECHAMENTO NATURAL E TRANSFERÊNCIA\nVocê deve agir como um humano, não seja robótico e NUNCA repita a mesma frase de encerramento em todas as mensagens.\n- Se o paciente disser apenas \"Não\", \"Obrigado\" ou encerrar o assunto, apenas responda com educação (ex: \"Por nada! Fico à disposição.\") e encerre.\n- Apenas quando terminar de explicar algo longo ou notar que o paciente tem dúvidas que fogem do seu conhecimento, ofereça de forma natural: \"Deseja mais alguma informação ou prefere falar com a nossa atendente?\".\n- Se o paciente pedir explicitamente para falar com atendente/humano ou estiver irritado, acione imediatamente a tool \"Pausar_Bot_Para_Humano\", avise que a secretária vai assumir e pare de responder."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        4800,
+        -96
+      ],
+      "id": "8de348dc-7c48-4342-85ec-2612d4cdff30",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4240,
+        384
+      ],
+      "id": "9c71c8ad-097d-4ad8-a6cd-694ab8aa7797",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Coletando dados').item.json.Numero.toString() }}\n",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        4464,
+        384
+      ],
+      "id": "ff59ae59-7998-425d-be15-f14bffd2d355",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ \"+\" + $('Coletando dados').item.json.Numero }}",
+        "messageText": "={{ $json[\"output.mensagens\"] }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        6688,
+        -80
+      ],
+      "id": "bcbe0c89-64e5-453c-b11d-d75502edb0c0",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nDnE6WhlW7amSekh",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6dcba4b8-a916-4766-a33d-f4637397ed96",
+              "name": "mensagemFinal",
+              "value": "={{ $('Redis3').item.json.propertyName.toJsonString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4512,
+        -96
+      ],
+      "id": "f2284c53-9460-4922-914f-294227d85af1",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "content": "## pegar dados",
+        "height": 176,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4224,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "4cf22dc7-be96-4ffd-990f-72c2de5a22eb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## cadastrar",
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        672,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "2fd82126-aa63-49eb-8c23-0193cf9259a5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## verficar se é texto ou aúdio",
+        "height": 240,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "3c00844b-0440-427c-ac63-46f522cd465c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "teste",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        -80
+      ],
+      "id": "fa610bb0-b49b-4ae2-b0da-4f517b199420",
+      "name": "Obter midia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nDnE6WhlW7amSekh",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "clinicaoftalmocenter33@gmail.com",
+          "mode": "list",
+          "cachedResultName": "clinicaoftalmocenter33@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4704,
+        384
+      ],
+      "id": "9a2ff6aa-7c63-4b3c-8253-159f09100dbd",
+      "name": "Criar Evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TQU5HHKLZx1ktmxq",
+          "name": "Agente de IA teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "calendar": {
+          "__rl": true,
+          "value": "clinicaoftalmocenter33@gmail.com",
+          "mode": "list",
+          "cachedResultName": "clinicaoftalmocenter33@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4832,
+        384
+      ],
+      "id": "5bc738ac-618e-4f55-bdea-2f583cd07427",
+      "name": "Buscar Evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TQU5HHKLZx1ktmxq",
+          "name": "Agente de IA teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "clinicaoftalmocenter33@gmail.com",
+          "mode": "list",
+          "cachedResultName": "clinicaoftalmocenter33@gmail.com"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4976,
+        384
+      ],
+      "id": "723a0520-cc5d-481c-800e-179616fd0aed",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TQU5HHKLZx1ktmxq",
+          "name": "Agente de IA teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "clinicaoftalmocenter33@gmail.com",
+          "mode": "list",
+          "cachedResultName": "clinicaoftalmocenter33@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5216,
+        384
+      ],
+      "id": "14b3a352-564e-446b-84ef-4910f718e746",
+      "name": "Atualizar Evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TQU5HHKLZx1ktmxq",
+          "name": "Agente de IA teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "clinicaoftalmocenter33@gmail.com",
+          "mode": "list",
+          "cachedResultName": "clinicaoftalmocenter33@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5088,
+        384
+      ],
+      "id": "77edb7d9-2721-42e7-9b5d-f48ed03c0472",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TQU5HHKLZx1ktmxq",
+          "name": "Agente de IA teste"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3408,
+        208
+      ],
+      "id": "f8cb4dee-47a2-437c-b561-c5a91d2b7cf4",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a6315dfa-1010-46e5-96f8-bed0e3cc0403",
+              "leftValue": "={{ $json.body.data.key.senderPn }}",
+              "rightValue": "558596380018@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "68376d25-57b0-44f0-841b-12e57f909463",
+              "leftValue": "={{ $json.body.data.key.senderPn }}",
+              "rightValue": "558591942095@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "12fe37ff-2948-4d4c-bcba-e3d80deb4496",
+              "leftValue": "={{ $json.body.data.key.senderPn }}",
+              "rightValue": "558589936100@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "68aef2a7-f08a-44ef-b43a-f5908f580429",
+              "leftValue": "={{ $json.body.data.key.senderPn }}",
+              "rightValue": "558588050110@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3680,
+        -48
+      ],
+      "id": "4825d32e-c1eb-4dca-99d2-20fc714e1472",
+      "name": "From me?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Coletando dados').item.json.TipoDeMensagem }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "69ea981d-63b8-4b07-95c9-99063131a453"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "10447e0d-fc81-4605-9e1a-5121c783220a",
+                    "leftValue": "={{ $('Coletando dados').item.json.TipoDeMensagem }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7d0b1ad1-d099-4413-b3ad-dd377dc52702",
+                    "leftValue": "={{ $('Coletando dados').item.json.TipoDeMensagem }}",
+                    "rightValue": "=imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        688,
+        -128
+      ],
+      "id": "cdcf6ea1-1298-438e-8fbb-64bac0c78c59",
+      "name": "Tipo da Mensagem"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "status_bot",
+        "key": "={{ $('Coletando dados').item.json.Numero }}_status",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -80
+      ],
+      "id": "e5904307-7531-4cce-89b9-71f2d13af4a1",
+      "name": "Redis5",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "150b0ba5-3c31-4393-aac7-f92a736a9172",
+              "leftValue": "={{ $json.status_bot }}",
+              "rightValue": "Desativado",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        -80
+      ],
+      "id": "14243e0f-7e23-4bf8-8b23-d3d9d1f4a047",
+      "name": "If3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -256
+      ],
+      "id": "32b6229c-2aea-4996-b96b-9f41649dfca5",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use esta ferramenta EXCLUSIVAMENTE quando o paciente pedir explicitamente para falar com um atendente humano, secretária, ou se a conversa ficar muito negativa/confusa. Após usar, avise o paciente que um humano já vai atendê-lo.",
+        "operation": "set",
+        "key": "={{ $('Coletando dados').item.json.Numero }}_status",
+        "value": "Desativado",
+        "expire": true,
+        "ttl": 43200
+      },
+      "type": "n8n-nodes-base.redisTool",
+      "typeVersion": 1,
+      "position": [
+        5344,
+        384
+      ],
+      "id": "2995813c-c8ec-41e8-90e9-523e1aba2c3f",
+      "name": "Pausar_Bot_Para_Humano",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9bcd865f-7ea7-441a-9c99-2dc2c2209a4d",
+              "leftValue": "={{ $json.Mensagem }}",
+              "rightValue": "#voltar",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1024,
+        -96
+      ],
+      "id": "1689d9ec-3c61-485f-92cc-86feef7ae517",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $json.Numero }}_status"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -288
+      ],
+      "id": "73b5235b-c232-44c9-b945-b5ca635d4a29",
+      "name": "Redis6",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Apenas estruture a <mensagem_do_usuario> no formato JSON solicitado.\n\nREGRAS:\n- Divida a resposta em blocos de texto curtos para simular uma conversa humana.\n- Cada bloco deve conter no máximo 180 caracteres.\n- Não altere o sentido da mensagem.\n\n<mensagem_do_usuario>\n{{ $json.output }}\n</mensagem_do_usuario>",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        5504,
+        -96
+      ],
+      "id": "e6d90503-39b2-4963-b94f-8ff3a3201929",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        5504,
+        160
+      ],
+      "id": "f0845af6-0a5a-4c8c-ae9f-8fd3ec442b17",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"mensagens\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\" }\n    }\n  },\n  \"required\": [\"mensagens\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        5680,
+        144
+      ],
+      "id": "1592a45f-6861-47e3-b42a-37744d9ee392",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.mensagens",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        5888,
+        -96
+      ],
+      "id": "75153b08-0013-4f2e-9dd5-860b321a55d5",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        6144,
+        -96
+      ],
+      "id": "199176aa-f964-4846-b770-98a19b3874fa",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6400,
+        -80
+      ],
+      "id": "c0ff5aa3-6c33-4781-9c2a-4466227a4890",
+      "name": "Wait1",
+      "webhookId": "2848ca83-3a72-48b5-be94-33060d651f96"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        5680,
+        352
+      ],
+      "id": "7af73694-1214-4f08-bcec-ca892fa2f23c",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "estado_paciente",
+        "key": "={{ $json.Numero }}_estado",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        -80
+      ],
+      "id": "570eee4d-d6e6-4a29-9951-108caa884e42",
+      "name": "Verificando estado paciente",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3b219c3f-18a3-4e89-8ac2-77d303c09d38",
+              "leftValue": "={{ $json.estado_paciente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2928,
+        -80
+      ],
+      "id": "89d6c168-b109-45c3-a6e9-9094caaf4dc5",
+      "name": "Verificando se tem estado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f51f7f9b-31ca-4013-b9f1-412e246adb78",
+              "name": "Nome",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "945c83d4-40f9-47fd-b032-0c99042bda50",
+              "name": "Numero",
+              "value": "={{ $json.body.data.key.senderPn.replace(\"@s.whatsapp.net\",\"\") }}",
+              "type": "number"
+            },
+            {
+              "id": "92f95571-daeb-4d62-8f4d-49f0affef81c",
+              "name": "TipoDeMensagem",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "1510e4e5-aca2-480c-a886-34fed11c8aee",
+              "name": "fromMe",
+              "value": "={{ $json.body.data.key.fromMe }}",
+              "type": "string"
+            },
+            {
+              "id": "849b68d4-f77a-4915-87f6-e41183b010f1",
+              "name": "bloquearAgente",
+              "value": "BloquearAgente",
+              "type": "string"
+            },
+            {
+              "id": "2e75ace1-b688-40d8-a6c9-542cb1d0b62b",
+              "name": "Mensagem",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "9d2656dd-fba9-40a6-b565-63a1f1b20335",
+              "name": "msgPicotada",
+              "value": "=MensagemPicotada{{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3408,
+        -64
+      ],
+      "id": "92d3ee89-2749-4c05-82d1-c87331821a51",
+      "name": "Coletando dados",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $json.Numero }}_estado",
+        "value": "={{ $json.estado_paciente }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -2416,
+        -96
+      ],
+      "id": "0f6a923b-1b63-482b-845d-45bb2fc852d9",
+      "name": "Colocando no banco de dados",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d26b865-6e51-40a6-8007-b64102cd2b0f",
+              "name": "estado_paciente",
+              "value": "{\"unidade\": \"\", \"nome_paciente\": \"\", \"data_nascimento\": \"\"}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -2640,
+        -96
+      ],
+      "id": "b6e0caf4-8a7e-4f6f-a92f-4a17b9e7a1ba",
+      "name": "Criando variável estado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7797580-3f5c-4e4d-80b5-4c7e73723c07",
+              "name": "estado_consolidado",
+              "value": "={{ $json.estado_paciente || $('Verificando estado paciente').item.json.estado_paciente }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -2176,
+        -96
+      ],
+      "id": "20dbe978-26c2-4680-917e-6c96d2fddbb9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um extrator de dados. Seu trabalho é ler a Mensagem do Paciente e atualizar a Ficha Atual.\nSe o paciente informar a unidade (Fortaleza, Jurema, Quixeramobim), o nome ou a data de nascimento, preencha na ficha.\nMantenha os dados que já estavam preenchidos na Ficha Atual.\nSe uma informação ainda não foi dita, deixe o campo vazio (\"\").\n\nFicha Atual:\n{{ $json.estado_consolidado }}\n\nMensagem do Paciente:\n{{ $('Edit Fields').item.json.Mensagem }}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -1840,
+        -96
+      ],
+      "id": "139506d5-f1c9-478d-b39a-7769ef5a04b3",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5",
+          "mode": "list",
+          "cachedResultName": "gpt-5"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1952,
+        144
+      ],
+      "id": "ed824913-cf18-4a7c-870d-4f4848a5e8bd",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"unidade\": { \"type\": \"string\" },\n    \"nome_paciente\": { \"type\": \"string\" },\n    \"data_nascimento\": { \"type\": \"string\" }\n  },\n  \"required\": [\"unidade\", \"nome_paciente\", \"data_nascimento\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1568,
+        144
+      ],
+      "id": "3cf0ca7c-f96a-4313-bedc-640d9cb88f05",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Coletando dados').item.json.Numero }}_estado",
+        "value": "={{ JSON.stringify($json.output) }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1344,
+        -96
+      ],
+      "id": "e1faa25e-bf82-444d-b925-7102f1b0bb33",
+      "name": "Redis7",
+      "credentials": {
+        "redis": {
+          "id": "E3oIlOtokA1agEpT",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "teste",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        160
+      ],
+      "id": "7c8456fa-d7b5-40cf-846c-8b629b6a1183",
+      "name": "Obter m dia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "nDnE6WhlW7amSekh",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "fileName": "imagem.jpg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        160
+      ],
+      "id": "8c31ccec-7f01-44e0-8faa-91ac7a3b2abb",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Extraia todos os dados úteis desta imagem (receita médica, documento ou carteirinha). Retorne apenas o texto extraído.",
+        "inputType": "base64",
+        "options": {
+          "maxTokens": 1500
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        1648,
+        160
+      ],
+      "id": "eb17f825-4ec4-4993-a8fd-85674457c6eb",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "0FRAqz34sTXVKJEM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "75c6adee-2b1b-420a-9638-cbf777a09ed2",
+              "name": "textoPronto",
+              "value": "={{ $('Coletando dados').item.json.Mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1872,
+        -320
+      ],
+      "id": "2f90e251-9f09-44b2-94aa-5ef07d1996cf",
+      "name": "Trata_Texto"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "967526be-d94a-4d44-8b82-6bbb3ac788e0",
+              "name": "textoPronto",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1872,
+        -80
+      ],
+      "id": "5bdd5ad1-28fe-44a7-937e-7467cd1c65c7",
+      "name": "Trata_Audio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d8429109-4474-4eba-85fd-be35e5b957a8",
+              "name": "textoPronto",
+              "value": "=[FOTO LIDA]: {{ $json['0'].content[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1872,
+        160
+      ],
+      "id": "a762ea6b-624c-4517-801d-adf61f769bcf",
+      "name": "Trata_Imagem"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2192,
+        -128
+      ],
+      "id": "9dc88a97-5c5a-4ecc-9e38-6460a56a5c26",
+      "name": "Ponto_De_Encontro"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "From me?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Tipo da Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Trata_Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter midia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "From me?": {
+      "main": [
+        [
+          {
+            "node": "Coletando dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo da Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Trata_Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter midia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis5": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar_Bot_Para_Humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Redis6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificando estado paciente": {
+      "main": [
+        [
+          {
+            "node": "Verificando se tem estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificando se tem estado": {
+      "main": [
+        [
+          {
+            "node": "Criando variável estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Coletando dados": {
+      "main": [
+        [
+          {
+            "node": "Verificando estado paciente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Colocando no banco de dados": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criando variável estado": {
+      "main": [
+        [
+          {
+            "node": "Colocando no banco de dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Redis7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis7": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Trata_Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing1": {
+      "main": [
+        []
+      ]
+    },
+    "Trata_Texto": {
+      "main": [
+        [
+          {
+            "node": "Ponto_De_Encontro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata_Audio": {
+      "main": [
+        [
+          {
+            "node": "Ponto_De_Encontro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata_Imagem": {
+      "main": [
+        [
+          {
+            "node": "Ponto_De_Encontro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ponto_De_Encontro": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "4a39f21f-16fd-42ce-ba4c-48b749db8970",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "34172fa363254c7e647034831416c9e940063b101bd46e59ccbca4802de9f8f4"
+  },
+  "nodeGroups": [],
+  "id": "tcE0mb2Tigp9IZwR",
+  "tags": []
+}
