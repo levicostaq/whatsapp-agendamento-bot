@@ -45,7 +45,7 @@ A ideia aqui não é substituir a secretária, e sim tirar dela a parte repetiti
 
 ## O agente e suas ferramentas
 
-![Fluxo do agente no n8n](fluxo-n8n-agente.png)
+![Fluxo do agente no n8n](Visao geral n8n.png)
 
 O AI Agent tem acesso ao modelo de linguagem, à memória da conversa no Redis e às ferramentas de calendário expostas via MCP — criar, buscar, listar, atualizar e excluir eventos — além da tool de transbordo para atendimento humano.
 
@@ -53,7 +53,7 @@ O AI Agent tem acesso ao modelo de linguagem, à memória da conversa no Redis e
 
 ## Integração com o Google Agenda
 
-![Consultas criadas automaticamente](google-calendar.png)
+![Consultas criadas automaticamente](Agenda1.png)(Agenda2.png)
 
 Cada agendamento confirmado na conversa vira um evento no calendário, respeitando os dias e horários de atendimento configurados.
 
